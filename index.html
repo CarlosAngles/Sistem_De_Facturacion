@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Factura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 50%;
+            margin: auto;
+            border-radius: 8px;
+        }
+        form {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h3 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        input[type="submit"],
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #0056b3;
+        }
+        .producto {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-start; /* Alinea las etiquetas con los inputs */
+            margin-bottom: 15px;
+        }
+        .producto > label {
+            flex-basis: 100%; /* Las etiquetas ocuparán toda la fila */
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .descripcion {
+            flex-basis: 40%; /* Descripción ocupará el 60% */
+            margin-right: 5px;
+        }
+        .cantidad {
+            flex-basis: 28%; /* Cantidad ocupará el 20% */
+            margin-right: 5px;
+        }
+        .precio {
+            flex-basis: 28%; /* Precio ocupará el 20% */
+        }
+        .producto input {
+            width: 100%; /* Ajustar inputs a su contenedor */
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Comprobante de venta</h1>
+    <form action="procesar_factura.php" method="POST">
+        <h3>Datos del Emisor:</h3>
+        <label for="nrodoc_emisor">Número de Documento:</label>
+        <input type="text" name="nrodoc_emisor" id="nrodoc_emisor" value="20123456789" required><br>
+
+        <label for="razon_social_emisor">Razón Social:</label>
+        <input type="text" name="razon_social_emisor" id="razon_social_emisor" value="TECN ORG" required><br>
+
+        <label for="nombre_comercial_emisor">Nombre Comercial:</label>
+        <input type="text" name="nombre_comercial_emisor" id="nombre_comercial_emisor" value="TEGN" required><br>
+
+        <label for="direccion_emisor">Dirección:</label>
+        <input type="text" name="direccion_emisor" id="direccion_emisor" value="jr. el puerto 123" required><br>
+
+        <label for="departamento_emisor">Departamento:</label>
+        <input type="text" name="departamento_emisor" id="departamento_emisor" value="PUNO" required><br>
+
+        <label for="provincia_emisor">Provincia:</label>
+        <input type="text" name="provincia_emisor" id="provincia_emisor" value="PUNO" required><br>
+
+        <label for="distrito_emisor">Distrito:</label>
+        <input type="text" name="distrito_emisor" id="distrito_emisor" value="PUNO" required><br>
+
+        <h3>Datos del Cliente:</h3>
+        <label for="tipodoc_cliente">Tipo de Documento Cliente:</label>
+        <select name="tipodoc_cliente" id="tipodoc_cliente">
+            <option value="6">RUC</option>
+            <option value="1">DNI</option>
+        </select><br>
+
+        <label for="nrodoc_cliente">Número de Documento Cliente:</label>
+        <input type="text" name="nrodoc_cliente" id="nrodoc_cliente" required><br>
+
+        <h3>Comprobante:</h3>
+        <label for="tipodoc_comprobante">Tipo de Comprobante:</label>
+        <select name="tipodoc_comprobante" id="tipodoc_comprobante">
+            <option value="01">Factura</option>
+            <option value="03">Boleta</option>
+        </select><br>
+
+        <label for="fecha_emision">Fecha de Emisión:</label>
+        <input type="date" name="fecha_emision" id="fecha_emision" required><br>
+
+        <label for="hora_emision">Hora de Emisión:</label>
+        <input type="time" name="hora_emision" id="hora_emision" required><br>
+
+        <h3>Detalle de Productos:</h3>
+        <div id="productos">
+            <div class="producto">
+                <div class="descripcion">
+                    <label for="producto_descripcion[]">Descripción:</label>
+                    <input type="text" name="producto_descripcion[]" required>
+                </div>
+                <div class="cantidad">
+                    <label for="producto_cantidad[]">Cantidad:</label>
+                    <input type="number" name="producto_cantidad[]" required>
+                </div>
+                <div class="precio">
+                    <label for="producto_precio_unitario[]">Precio Unitario:</label>
+                    <input type="number" name="producto_precio_unitario[]" step="0.01" required>
+                </div>
+
+                <select name="Tipo_afectacion[]">
+                    <option value="10">Gravado</option>
+                    <option value="20">Exonerado</option>
+                    <option value="30">Inafecto</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" onclick="agregarProducto()">Agregar otro producto</button><br>
+
+        <input type="submit" value="Generar y Enviar Comprobante">
+    </form>
+
+    <script>
+        function agregarProducto() {
+            let producto = document.querySelector('.producto').cloneNode(true);
+            let inputs = producto.querySelectorAll('input');
+            inputs.forEach(input => input.value = ''); // Limpiar valores
+            document.getElementById('productos').appendChild(producto);
+        }
+    </script>
+</body>
+</html>
